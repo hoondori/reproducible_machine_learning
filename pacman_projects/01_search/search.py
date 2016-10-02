@@ -72,35 +72,11 @@ def tinyMazeSearch(problem):
     w = Directions.WEST
     return  [s, s, w, s, w, w, s, w]
 
-def depthFirstSearch(problem):
-    """
-    Search the deepest nodes in the search tree first.
-
-    Your search algorithm needs to return a list of actions that reaches the
-    goal. Make sure to implement a graph search algorithm.
-
-    To get started, you might want to try some of these simple commands to
-    understand the search problem that is being passed in:
-
-    print "Start:", problem.getStartState()
-    print "Is the start a goal?", problem.isGoalState(problem.getStartState())
-    print "Start's successors:", problem.getSuccessors(problem.getStartState())
-    """
-    print "Start:", problem.getStartState()
-    print "Is the start a goal?", problem.isGoalState(problem.getStartState())
-    print "Start's successors:", problem.getSuccessors(problem.getStartState())
-
-    solution = GraphSearch(problem)
-    print solution
-    return solution
-
-
 # given problem, return a solution
 # here a solution may be sequence of actions
-def GraphSearch(problem):
+def GraphSearch(problem,frontiers):
 
     # initialize the frontier using the initial state of problem
-    frontiers = util.Stack()
     frontiers.push(SearchNode(problem.getStartState(),None,None,None))
 
     # initialize the explored set to be empty
@@ -159,11 +135,39 @@ class SearchNode:
         solution.reverse()
         return solution
 
+def depthFirstSearch(problem):
+    """
+    Search the deepest nodes in the search tree first.
+
+    Your search algorithm needs to return a list of actions that reaches the
+    goal. Make sure to implement a graph search algorithm.
+
+    To get started, you might want to try some of these simple commands to
+    understand the search problem that is being passed in:
+
+    print "Start:", problem.getStartState()
+    print "Is the start a goal?", problem.isGoalState(problem.getStartState())
+    print "Start's successors:", problem.getSuccessors(problem.getStartState())
+    """
+    print "Start:", problem.getStartState()
+    print "Is the start a goal?", problem.isGoalState(problem.getStartState())
+    print "Start's successors:", problem.getSuccessors(problem.getStartState())
+
+    frontiers = util.Stack()
+    solution = GraphSearch(problem,frontiers)
+    print solution
+    return solution
+
 
 def breadthFirstSearch(problem):
     """Search the shallowest nodes in the search tree first."""
-    "*** YOUR CODE HERE ***"
-    util.raiseNotDefined()
+
+    costFunction = lambda searchNode: len(searchNode.getSolution())
+    frontiers = util.PriorityQueueWithFunction(costFunction)
+
+    solution = GraphSearch(problem,frontiers)
+    print solution
+    return solution
 
 def uniformCostSearch(problem):
     """Search the node of least total cost first."""
